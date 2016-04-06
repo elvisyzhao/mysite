@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>菜单</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#order").click(function(){
+                    var form = $("#order-form");
+                    form.attr("action", "/rms/pre_order/");
+                    form.attr("method", "post");
+                    for (var i = 0; i < $(".panel-footer").length; ++i) {
+                        var label = $(".panel-footer").eq(i).children('label').eq(0);
+                        var pid = label.attr("pid");
+                        var count = label.text();
+                        if (parseInt(count) > 0)
+                        {
+                            var input = $("<input type='hidden' />");
+                            input.attr('name', pid);
+                            input.attr('value', count);
+                            form.append(input); 
+                        }                     
+                    }
+                    form.submit();
+                    });
+                        $('.glyphicon-minus').click(function(){
+                            var value =
+                                parseInt($(this).parent(".panel-footer").children("label").eq(0).text());
+                            if (value >= 1) {
+                                value--;
+                            $(this).parent('.panel-footer').children('label').eq(0).text(value.toString());
+                            var unitPrice =
+                                parseInt($(this).parent('.panel-footer').children('label').eq(1).text());
+                            var strPrice = $("#price").text();
+                            var price = parseInt(strPrice.substr(0,
+                                    strPrice.length-1));
+                            var newPrice = price - unitPrice;
+                            $("#price").text(newPrice.toString().concat("元"));
+                        }
+                    });
+                    $('.glyphicon-plus').click(function(){
+                        var value =
+                            parseInt($(this).parent(".panel-footer").children("label").eq(0).text());
+                        value++;
+                        $(this).parent('.panel-footer').children('label').eq(0).text(value.toString());
+                        var unitPrice =
+                            parseInt($(this).parent('.panel-footer').children('label').eq(1).text());
+                        var strPrice = $("#price").text();
+                        var price = parseInt(strPrice.substr(0,
+                                    strPrice.length-1));
+                        var newPrice = price + unitPrice;
+                        $("#price").text(newPrice.toString().concat("元"));
+                    });
+            });
+        </script>
+        <style>
+            .navbar{
+                position:fixed;
+                top:0;
+            }
+            .footer{
+                    position:fixed;
+                    width:100%;
+                    left:0;
+                    bottom:0;
+                    right:0;
+                    z-index:9999;
+                    margin-bottom:0;
+            }
+            .hcenter-container{
+                    display: flex;
+                    height: 100;
+                    justify-content: center;
+                    flex-direction: column;
+            }
+            .hcenter-item{
+                    height:50;
+                    border: 1px solid red;
+            }
+        </style>
+    </head>
+    <body data-spy="scroll" data-target=".navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-4 col-sm-4">
+                    <nav class="navbar navbar-inverse">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for key, value in types.items %}
+                            {% if forloop.first %}
+                            <li class='active'><a href='#{{ key }}'>{{ value }}</a></li>
+                            {% else %}
+                            <li><a href='#{{ key }}'>{{ value }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </nav>
+                </div>
+                <div class="col-xs-8 col-sm-8">
+                    {% for key, value in dishes.items %}
+                    <div id='{{ key }}'>
+                        <div class='panel-group'>
+                            {% for item in value %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <p1>{{ item.name }}</p1>
+                                </div>
+                                <div class="panel-body">
+                                    <img src="{{ item.photo.url }}" class="img-responsive">
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="glyphicon glyphicon-minus inline"></span>
+                                    <label pid="{{ item.id }}" class="inline">0</label>
+                                    <span class="glyphicon glyphicon-plus inline"></span>
+                                    <label style="float:right;">{{ item.price }}元</label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="footer" style="background-color:#cccccc;">
+            <label style="vertical-align:middle;position:absolute;top:50%;transform:translateY(-50%);">合计:</label>
+            <label id="price"
+                        style="font-size:10px;position:absolute;top:50%;left:50px;transform:translateY(-50%);">0元</label>
+            <button type="button" class="btn-success btn-lg" id="order"
+                        style="float: right;">下单</button>
+        </div>
+        <form id='order-form' style='display:none'>{% csrf_token %}</form>
+    </body>
+</html>

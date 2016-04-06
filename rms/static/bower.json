@@ -1,0 +1,28 @@
+{
+  "name": "whatever",
+  "authors": [
+    "elvisyzhao"
+  ],
+  "description": "test",
+  "main": "what",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "keywords": [
+    "what"
+  ],
+  "license": "MIT",
+  "homepage": "ddd",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

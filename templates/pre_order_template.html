@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>预约时间</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        {% load staticfiles %}
+        <link rel="stylesheet"
+              href="{% static "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="{% static "moment/min/moment.min.js" %}"></script>
+        <script src="{% static "moment/min/moment-with-locales.min.js" %}"></script>
+        <script
+                src="{% static "eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" %}"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-10">
+                    <form action='/rms/order/' method='post'>
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker1">
+                            <input id="time" type="text" name='appointment_time' class="form-control"
+                            placeholder="请输入预计开始用餐时间" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon
+                                glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input id="note" type="text" class="form-control"
+                                                     placeholder="请输入特殊要求"
+                                                     />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-lg"
+                            action='/rms/order/'>下单</button>
+                    </div>
+                    </form>
+                </div>
+                <script type="text/javascript">
+                    $(function (){
+                        $("#datetimepicker1").datetimepicker({
+                            locale:'zh-cn'
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </body>
+</html>

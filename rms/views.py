@@ -1,0 +1,82 @@
+# coding: UTF-8
+
+from django.shortcuts import render
+from .models import Restaurant, Dish, OrderEntry, Order
+from django.views.decorators.csrf import csrf_protect
+import re
+import logging
+from django.http import HttpResponse
+import datetime
+
+logger = logging.getLogger(__name__)
+ch = logging.StreamHandler()
+logger.addHandler(ch)
+logger.setLevel(logging.INFO)
+
+# Create your views here.
+@csrf_protect
+def menu(request, rid):
+    restaurant = Restaurant.objects.get(id=rid)
+    dish_types = restaurant.dishtype_set.all()
+    dic = {}
+    dic['types'] = {}
+    dic['dishes'] = {}
+    for dish_type in dish_types:
+        dic['types'][dish_type.id] = dish_type.name 
+        dic['dishes'][dish_type.id] = list(dish_type.dish_set.all())
+    return render(request, 'menu_template.html', dic)
+
+@csrf_protect
+def pre_order(request):
+    totalPrice = 0
+    request.session['order'] = request.POST
+    return render(request, 'pre_order_template.html', None)
+
+@csrf_protect
+def order(request):
+    appointment_time = request.POST['appointment_time'].encode('utf-8')
+    logger.error(type(appointment_time))
+    reg = re.compile(r'(\d{4})-(\d{1,2})-(\d{1,2}) ([\x80-\xff]+)(\d{1,2})点(\d{1,2})分')
+    reMatch = reg.match(appointment_time)
+    time = None
+    if (reMatch.lastindex == 6):
+        pStr = reMatch.group(4)
+        yearStr = reMatch.group(1)
+        monthStr = reMatch.group(2)
+        dayStr = reMatch.group(3)
+        hourStr = reMatch.group(5)
+        minuteStr = reMatch.group(6)
+        if pStr == '凌晨':
+            if hourStr == '12':
+                hourStr = '0'
+        elif pStr == '早上':
+            pass
+        elif pStr == '上午':
+            pass
+        elif pStr == '中午':
+            if hourStr == '12' and int(minuteStr) != 0:
+                hourStr = str(int(hourStr)+12)
+        elif pStr == '下午':
+            hourStr = str(int(hourStr)+12)
+        elif pStr == '晚上':
+            hourStr = str(int(hourStr)+12)
+        else:
+            pass
+        time_str = "%s-%s-%s %s:%s" % (yearStr, monthStr, dayStr, hourStr, minuteStr)
+        time = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M');
+        order = Order.objects.create(appointment_time=time)
+        totalPrice = 0
+        for key, value in request.session['order'].items():
+            pid = key
+            try:
+                count = int(value)
+                dish = Dish.objects.get(id=pid)
+                price = dish.price
+                totalPrice += price * count
+                entry = OrderEntry.objects.create(dish=dish, order=order, count=count)
+            except:
+                pass
+        order.save()
+    else:
+        logger.error('time string error')        
+    return HttpResponse(datetime.datetime.strftime(time, "%Y-%m-%d %H:%M"))
