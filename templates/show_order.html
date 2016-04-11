@@ -21,8 +21,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for item in items %}
                         <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.count }}</td>
+                            <td></td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
