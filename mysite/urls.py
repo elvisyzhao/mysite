@@ -23,3 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^rms/', include('rms.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'rms.views.handler404'
+handler500 = 'rms.views.handler500'

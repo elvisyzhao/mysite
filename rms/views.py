@@ -5,8 +5,9 @@ from .models import Restaurant, Dish, OrderEntry, Order
 from django.views.decorators.csrf import csrf_protect
 import re
 import logging
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 import datetime
+from django.shortcuts import get_object_or_404
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -16,7 +17,8 @@ logger.setLevel(logging.INFO)
 # Create your views here.
 @csrf_protect
 def menu(request, rid):
-    restaurant = Restaurant.objects.get(id=rid)
+    restaurant = get_object_or_404(Restaurant, pk=rid)
+    #restaurant = Restaurant.objects.get(id=rid)
     dish_types = restaurant.dishtype_set.all()
     dic = {}
     dic['types'] = {}
@@ -64,7 +66,8 @@ def order(request):
             pass
         time_str = "%s-%s-%s %s:%s" % (yearStr, monthStr, dayStr, hourStr, minuteStr)
         time = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M');
-        order = Order.objects.create(appointment_time=time)
+        phone = request.POST['phone']
+        order = Order.objects.create(appointment_time=time, phone=phone)
         totalPrice = 0
         for key, value in request.session['order'].items():
             pid = key
@@ -80,3 +83,9 @@ def order(request):
     else:
         logger.error('time string error')        
     return HttpResponse(datetime.datetime.strftime(time, "%Y-%m-%d %H:%M"))
+
+def handler404(request, exception, template_name='404.html'):
+    return HttpResponse('Haha')
+
+def handler500(request, template_name='500.html'):
+    return HttpResponse('Heihei')
