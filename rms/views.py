@@ -7,7 +7,7 @@ import re
 import logging
 from django.http import HttpResponse, HttpResponseNotFound
 import datetime
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -80,9 +80,19 @@ def order(request):
             except:
                 pass
         order.save()
+        return redirect(show_order, order.id)
     else:
         logger.error('time string error')        
     return HttpResponse(datetime.datetime.strftime(time, "%Y-%m-%d %H:%M"))
+
+def show_order(request, oid):
+    order = Order.objects.get(pk=oid)
+    items = list(order.orderentry_set.all())
+    dic = {}
+    dic['items'] = items
+    dic['appointment_time'] = datetime.datetime.now()
+    dic['total_price'] = 100
+    return render(request, 'show_order.html', dic)
 
 def handler404(request, exception, template_name='404.html'):
     return HttpResponse('Haha')

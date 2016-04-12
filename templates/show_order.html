@@ -23,15 +23,22 @@
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <td>{{ item.name }}</td>
+                            <td>{{ item.dish.name }}</td>
                             <td>{{ item.count }}</td>
-                            <td></td>
+                            <td>{% widthratio item.dish.price 1 item.count %}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <div>
+            <div class='row' style='text-align:right'>
+                <h3><span class='label label-success'>{{ total_price }}<span></h3>
+                <h3><span class='label label-success'>{{ appointment_time|date:"Y年m月d日 H点i分" }}<span></h3>
+            </div>
+            <div class='row'>
+                {% load staticfiles %}
+                <h4>请扫描或识别下方二维码转账付款完成订单</h4>
+                <img src="{% static 'QR.jpg' %}" class='img-rounded img-responsive'>
             </div>
         </div>
     </body>
