@@ -88,10 +88,13 @@ def order(request):
 def show_order(request, oid):
     order = Order.objects.get(pk=oid)
     items = list(order.orderentry_set.all())
+    totalPrice = 0
+    for item in items:
+        totalPrice += item.dish.price * item.count
     dic = {}
     dic['items'] = items
-    dic['appointment_time'] = datetime.datetime.now()
-    dic['total_price'] = 100
+    dic['appointment_time'] = order.appointment_time
+    dic['total_price'] = totalPrice
     return render(request, 'show_order.html', dic)
 
 def handler404(request, exception, template_name='404.html'):

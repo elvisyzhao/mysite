@@ -70,6 +70,7 @@
                     right:0;
                     z-index:9999;
                     margin-bottom:0;
+                        height:50px;
             }
             .hcenter-container{
                     display: flex;
@@ -122,11 +123,13 @@
                         </div>
                     </div>
                     {% endfor %}
+                    <div style='height:50px'>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="footer" style="background-color:#cccccc;">
-            <label style="vertical-align:middle;position:absolute;top:50%;transform:translateY(-50%);">合计:</label>
+        <div class="footer" style="background-color:#cccccc">
+            <label style="position:relative;top:50%;transform:translateY(-50%);">合计:</label>
             <label id="price"
                         style="font-size:10px;position:absolute;top:50%;left:50px;transform:translateY(-50%);">0元</label>
             <button type="button" class="btn-success btn-lg" id="order"
