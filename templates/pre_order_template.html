@@ -51,7 +51,9 @@
                 <script type="text/javascript">
                     $(function (){
                         $("#datetimepicker1").datetimepicker({
-                            locale:'zh-cn'
+                            locale:'zh-cn',
+                            minDate:'{{ min_date }}',
+                            maxDate:'{{ max_date }}'
                         });
                     });
                 </script>

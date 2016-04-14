@@ -32,7 +32,10 @@ def menu(request, rid):
 def pre_order(request):
     totalPrice = 0
     request.session['order'] = request.POST
-    return render(request, 'pre_order_template.html', None)
+    dic = {}
+    dic['min_date'] = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
+    dic['max_date'] = (datetime.datetime.now()+datetime.timedelta(days=7)).strftime("%m/%d/%Y")
+    return render(request, 'pre_order_template.html', dic)
 
 @csrf_protect
 def order(request):
@@ -98,7 +101,7 @@ def show_order(request, oid):
     return render(request, 'show_order.html', dic)
 
 def handler404(request, exception, template_name='404.html'):
-    return HttpResponse('Haha')
+    return HttpResponse('404')
 
 def handler500(request, template_name='500.html'):
-    return HttpResponse('Heihei')
+    return HttpResponse('服务器发生了一些问题')
