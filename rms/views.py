@@ -35,6 +35,7 @@ def pre_order(request):
     dic = {}
     dic['min_date'] = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
     dic['max_date'] = (datetime.datetime.now()+datetime.timedelta(days=7)).strftime("%m/%d/%Y")
+    logger.error("user's phone is : " + request.user.player.phone)
     return render(request, 'pre_order_template.html', dic)
 
 @csrf_protect
@@ -99,6 +100,10 @@ def show_order(request, oid):
     dic['appointment_time'] = order.appointment_time
     dic['total_price'] = totalPrice
     return render(request, 'show_order.html', dic)
+
+def order_list(request):
+    order_list = list(request.user.player.order_list.all())
+    return render(requset, 'order_list.html', {'order_list':order_list})
 
 def handler404(request, exception, template_name='404.html'):
     return HttpResponse('404')

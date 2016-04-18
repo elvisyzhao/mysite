@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 import pytz
 
 class Player(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=16)
     def __unicode__(self):
         return self.user.username
