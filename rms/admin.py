@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Owner, Restaurant, DishType, Dish
+from .models import Player, Restaurant, DishType, Dish
 import logging
 from django import forms
 from .models import Order, OrderEntry
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -34,5 +36,14 @@ class OrderEntryInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderEntryInline]
 
+class PlayerInline(admin.TabularInline):
+    model = Player
+    can_delete = False
+
+class UserAdmin(BaseUserAdmin):
+    inlines=[PlayerInline]
+
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
