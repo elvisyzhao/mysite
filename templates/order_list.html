@@ -23,10 +23,10 @@
                     <tbody>
                         {% for order in order_list %}
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ order.restaurant.name }}</td>
+                            <td>{{ order.appointment_time }}</td>
+                            <td>{{ order.price }}</td>
+                            <td>{{ order.get_status_display }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

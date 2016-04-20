@@ -71,7 +71,7 @@ def order(request):
         time_str = "%s-%s-%s %s:%s" % (yearStr, monthStr, dayStr, hourStr, minuteStr)
         time = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M');
         phone = request.POST['phone']
-        order = Order.objects.create(appointment_time=time, phone=phone)
+        order = Order.objects.create(appointment_time=time, phone=phone, customer=request.user.player)
         totalPrice = 0
         for key, value in request.session['order'].items():
             pid = key
@@ -83,6 +83,9 @@ def order(request):
                 entry = OrderEntry.objects.create(dish=dish, order=order, count=count)
             except:
                 pass
+        order.customer = request.user.player
+        logger.error('----------' + request.user.username)
+        logger.error('----------' + request.user.player.phone)
         order.save()
         return redirect(show_order, order.id)
     else:
@@ -102,8 +105,8 @@ def show_order(request, oid):
     return render(request, 'show_order.html', dic)
 
 def order_list(request):
-    order_list = list(request.user.player.order_list.all())
-    return render(requset, 'order_list.html', {'order_list':order_list})
+    order_list = list(request.user.player.order_set.all())
+    return render(request, 'order_list.html', {'order_list':order_list})
 
 def handler404(request, exception, template_name='404.html'):
     return HttpResponse('404')

@@ -49,6 +49,7 @@ class Order(models.Model):
             (REFUNDED, u'已退款'),
             (FINISHED, u'已完成')
             )
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     customer = models.ForeignKey(Player, on_delete=models.CASCADE)
     appointment_time = models.DateTimeField()
     order_time = models.DateTimeField(auto_now_add=True)
@@ -56,6 +57,14 @@ class Order(models.Model):
     phone = models.CharField(max_length=16)
     status = models.CharField(max_length=2, choices=STATUS_CHOICE,
             default=INITIALIZED)
+
+    def _get_total_price(self):
+        total_price = 0
+        for entry in self.orderentry_set.all():
+            total_price += entry.count * entry.dish.price
+        return total_price
+    price = property(_get_total_price)
+
     def __unicode__(self):
         tz = pytz.timezone('Asia/Shanghai')
         return self.appointment_time.astimezone(tz).strftime('%y-%m-%d %H:%M')
