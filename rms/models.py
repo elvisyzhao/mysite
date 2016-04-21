@@ -6,14 +6,14 @@ from django.db import models
 from django.contrib.auth.models import User
 import pytz
 
-class Player(models.Model):
+class MyUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=16)
     def __unicode__(self):
         return self.user.username
 
 class Restaurant(models.Model):
-    owner = models.ForeignKey(Player, on_delete=models.CASCADE)
+    owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     address = models.CharField(max_length=128)
     def __unicode__(self):
@@ -50,7 +50,7 @@ class Order(models.Model):
             (FINISHED, u'已完成')
             )
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Player, on_delete=models.CASCADE)
+    customer = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     appointment_time = models.DateTimeField()
     order_time = models.DateTimeField(auto_now_add=True)
     extras = models.CharField(max_length=128, null=True)

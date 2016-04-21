@@ -1,6 +1,6 @@
 # coding: UTF-8
 from django.contrib import admin
-from .models import Player, Restaurant, DishType, Dish
+from .models import MyUser, Restaurant, DishType, Dish
 import logging
 from django import forms
 from .models import Order, OrderEntry
@@ -41,12 +41,12 @@ class OrderEntryInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderEntryInline]
 
-class PlayerInline(admin.TabularInline):
-    model = Player
+class MyUserInline(admin.TabularInline):
+    model = MyUser
     can_delete = False
 
 class UserAdmin(BaseUserAdmin):
-    inlines=[PlayerInline]
+    inlines=[MyUserInline]
     
 admin_site = RMSAdminSite(name="rmsadmin")
 
