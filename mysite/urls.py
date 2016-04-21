@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
+from rms.admin import admin_site
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin_site.urls),
     url(r'^rms/', include('rms.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

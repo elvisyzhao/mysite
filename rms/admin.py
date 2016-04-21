@@ -1,3 +1,4 @@
+# coding: UTF-8
 from django.contrib import admin
 from .models import Player, Restaurant, DishType, Dish
 import logging
@@ -5,11 +6,15 @@ from django import forms
 from .models import Order, OrderEntry
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.admin import AdminSite
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
 logger.addHandler(ch)
 logger.setLevel(logging.INFO)
+
+class RMSAdminSite(AdminSite):
+    site_header = "餐馆管理系统"
 
 class DishTypeInline(admin.TabularInline):
     model = DishType
@@ -42,8 +47,9 @@ class PlayerInline(admin.TabularInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines=[PlayerInline]
+    
+admin_site = RMSAdminSite(name="rmsadmin")
 
-admin.site.register(Restaurant, RestaurantAdmin)
-admin.site.register(Order, OrderAdmin)
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin_site.register(Restaurant, RestaurantAdmin)
+admin_site.register(Order, OrderAdmin)
+admin_site.register(User, UserAdmin)
