@@ -8,6 +8,7 @@ import logging
 from django.http import HttpResponse, HttpResponseNotFound
 import datetime
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -35,7 +36,7 @@ def pre_order(request):
     dic = {}
     dic['min_date'] = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
     dic['max_date'] = (datetime.datetime.now()+datetime.timedelta(days=7)).strftime("%m/%d/%Y")
-    logger.error("user's phone is : " + request.user.player.phone)
+    logger.error("user's phone is : " + request.user.myuser.phone)
     return render(request, 'pre_order_template.html', dic)
 
 @csrf_protect
@@ -71,7 +72,7 @@ def order(request):
         time_str = "%s-%s-%s %s:%s" % (yearStr, monthStr, dayStr, hourStr, minuteStr)
         time = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M');
         phone = request.POST['phone']
-        order = Order.objects.create(appointment_time=time, phone=phone, customer=request.user.player)
+        order = Order.objects.create(appointment_time=time, phone=phone, customer=request.user.myuser)
         totalPrice = 0
         for key, value in request.session['order'].items():
             pid = key
@@ -83,9 +84,9 @@ def order(request):
                 entry = OrderEntry.objects.create(dish=dish, order=order, count=count)
             except:
                 pass
-        order.customer = request.user.player
+        order.customer = request.user.myuser
         logger.error('----------' + request.user.username)
-        logger.error('----------' + request.user.player.phone)
+        logger.error('----------' + request.user.myuser.phone)
         order.save()
         return redirect(show_order, order.id)
     else:
@@ -104,8 +105,9 @@ def show_order(request, oid):
     dic['total_price'] = totalPrice
     return render(request, 'show_order.html', dic)
 
+@login_required
 def order_list(request):
-    order_list = list(request.user.player.order_set.all())
+    order_list = list(request.user.myuser.order_set.all())
     return render(request, 'order_list.html', {'order_list':order_list})
 
 def handler404(request, exception, template_name='404.html'):

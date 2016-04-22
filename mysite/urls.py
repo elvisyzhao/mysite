@@ -19,10 +19,12 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from rms.admin import admin_site
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin_site.urls),
     url(r'^rms/', include('rms.urls')),
+    url(r'^accounts/login/$', auth_views.login),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'rms.views.handler404'
