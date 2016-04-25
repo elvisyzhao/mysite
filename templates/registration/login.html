@@ -7,21 +7,35 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#get_code').click(function() {
+                    $.post('/rms/getcode/', {csrfmiddlewaretoken: '{{ csrf_token }}'}, function(data, status) {
+                        alert(status);
+                    });
+                });
+            });            
+        </script>
     </head>
     <body>  
         <div class='container'>
             <div class='row'>
-                <form method='post' action='.' role='form'>
+                <form method='post' class='form-horizontal' action='.' role='form'>
                     {% csrf_token %}
                     <div class='form-group'>
                         {{ form.username.errors }}
-                        <label for='{{ form.username.id_for_label  }}'>用户名:</label>
-                        <input type='text' class='form-control' id='username' name='username'>
+                        <label for='{{ form.username.id_for_label  }}'>手机号:</label>
+                        <input type='text' class='form-control' id='{{ form.username.id_for_label }}' name='username' placeholder='请输入手机号' />
                     </div>
                     <div class='form-group'>
                         {{ form.password.errors }}
-                        <label for='{{ form.password.id_for_label  }}'>密码:</label>
-                        <input type='password' class='form-control' id='password' name='password'>
+                        <label for='{{ form.password.auto_id }}'>验证码:</label>
+                        <div class='input-group'>
+                        <input type='password' class='form-control' id='{{ form.password.auto_id }}' name='password' placeholder='请输入收到的验证码' />
+                        <span class='input-group-addon' id='get_code'>
+                            <label>获取验证码</label>
+                        </span>
+                        </div>
                     </div>
                     <input type='submit' value='log in' class='btn btn-default' />
                     <input type='hidden' name='next' value='{{ next }}' />

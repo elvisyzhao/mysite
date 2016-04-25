@@ -40,6 +40,7 @@ def pre_order(request):
     return render(request, 'pre_order_template.html', dic)
 
 @csrf_protect
+@login_required
 def order(request):
     appointment_time = request.POST['appointment_time'].encode('utf-8')
     logger.error(type(appointment_time))
@@ -93,6 +94,7 @@ def order(request):
         logger.error('time string error')        
     return HttpResponse(datetime.datetime.strftime(time, "%Y-%m-%d %H:%M"))
 
+@login_required
 def show_order(request, oid):
     order = Order.objects.get(pk=oid)
     items = list(order.orderentry_set.all())
@@ -111,7 +113,7 @@ def order_list(request):
     return render(request, 'order_list.html', {'order_list':order_list})
 
 def handler404(request, exception, template_name='404.html'):
-    return HttpResponse('404')
+    return HttResponse('404')
 
 def handler500(request, template_name='500.html'):
     return HttpResponse('服务器发生了一些问题')
