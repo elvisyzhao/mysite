@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 import datetime
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -111,6 +112,11 @@ def show_order(request, oid):
 def order_list(request):
     order_list = list(request.user.myuser.order_set.all())
     return render(request, 'order_list.html', {'order_list':order_list})
+
+@csrf_protect
+def get_code(request):
+    logger.error(request.POST.get('phone', None))
+    return HttpResponse('successful')
 
 def handler404(request, exception, template_name='404.html'):
     return HttResponse('404')
