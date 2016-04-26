@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}店小二{% endblock %}
+
+{% block extrascript %}
+<script>
+</script>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+.logo {
+    font-size: 200px;
+}
+.logo-small {
+    font-size: 50px;
+}
+@media screen and (max-width: 768px) {
+    .clo-sm-4 {
+        text-align: center;
+            margin:25px 0;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class='navbar navbar-default navbar-fixed-top'>
+    <div class='container'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collaple' data-target='#myNavbar'>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand'>店小二</a>
+        </div>
+        <div class='collapse navbar-collapse' id='myNavbar'>
+            <ul class='nav navbar-nav navbar-right'>
+                <li><a></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class='jumbotron text-center'>
+    <h1>店小二</h1>
+    <p>Lorem ipsum...</p>
+</div>
+<!-- value  -->
+<div class='container-fluid'>
+    <div class='row'>
+        <div class='col-sm-8'>
+            <h2>我们的价值</h2>
+            <h4><strong>目标:</strong>Lorem ipsum...</h4>
+            <p><strong>愿景:</strong>Lorem ipsum...</p>
+        </div>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-signal logo'></span>
+        </div>
+    </div>
+</div>
+<!-- endvalue -->
+
+<!-- service -->
+<div class='container-fluid text-center'>
+    <h2>服务</h2>
+    <h4>我们可以为您做什么</h4>
+    <br>
+    <div class='row'>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-phone'></span>
+            <h4>微信连Wi-Fi</h4>
+            <p>微信扫描二维码直连Wi-Fi</p>
+        </div>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-comment'></span>
+            <h4>公众号运营</h4>
+            <p>第一时间转化顾客为公众号粉丝</p>
+        </div>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-glass'></span>
+            <h4>智能点餐</h4>
+            <p>在手持设备上直接点餐下单，解放服务员</p>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-piggy-bank'></span>
+            <h4>手机支付</h4>
+            <p>在手持设备上直接支付，快速到账</p>
+        </div>
+        <div class='col-sm-4'>
+            <span class='glyphicon glyphicon-user'></span>
+            <h4>智能管理</h4>
+            <p>员工签到，奖励，供销存一体化管理</p>
+        </div>
+        <div class='col-sm-4'>
+        </div>
+    </div>
+</div>
+<!-- endservice -->
+
+<!-- contact -->
+<div class='container-fluid text-center'>
+    <h2 class='text-center'>联系我们</h2>
+    <div class='row'>
+        <div class='col-sm-5'>
+            <p></p>
+            <p><span class='glyphicon glyphicon-map-marker'> 西城区西直门内大街</span></p>
+            <p><span class='glyphicon glyphicon-phone'></span> +86 15910685106</p>
+            <p><span class='glyphicon glyphicon-envelope'></span> fire171@163.com</p>
+        </div>
+        <div class='col-sm-7'>
+            <form action='' method='post'>
+                {% csrf_token %}
+                <div class='row'>
+                    <div class='col-sm-6 form-group'>
+                        <input class='form-control' id='name' name='name' placeholder='称呼' type='text' required>
+                    </div>
+                    <div class='col-sm-6 form-group'>
+                        <input class='form-control' id='email' name='email' placeholder='邮箱地址' type='email'>
+                    </div>
+                </div>
+                <textarea class='form-control' id='message' name='message' placeholder='请输入留言' rows='5'></textarea>
+                <br>
+                <div class='row'>
+                    <div class='col-sm-12 form-group'>
+                        <button class='bth btn-default pull-right' type='submit'></button>
+                    </div>    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- endcontact -->
+{% endblock %}
