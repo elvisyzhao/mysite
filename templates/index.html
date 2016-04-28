@@ -4,21 +4,74 @@
 
 {% block extrascript %}
 <script>
+$(window).scroll(function() {
+    $('.slideanim').each(function () {
+        var pos = $(this).offset().top;
+        var winTop = $(window).scrollTop();
+
+        if (pos < winTop + 600) {
+            $(this).addClass('slide');
+        }
+    });
+});
 </script>
 {% endblock %}
 
 {% block extrastyle %}
 <style>
+
+.jumbotron {
+    padding: 100px 25px;
+}
+
+.container-fluid {
+    padding: 60px 50px;
+}
+
 .logo {
     font-size: 200px;
 }
+
 .logo-small {
     font-size: 50px;
 }
+
 @media screen and (max-width: 768px) {
     .clo-sm-4 {
         text-align: center;
             margin:25px 0;
+    }
+}
+
+.slideanim {visibility:hidden;}
+
+.slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+}
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
     }
 }
 </style>
@@ -37,37 +90,27 @@
         </div>
         <div class='collapse navbar-collapse' id='myNavbar'>
             <ul class='nav navbar-nav navbar-right'>
-                <li><a></a></li>
+                <li><a href='#value'>团队价值</a></li>
+                <li><a href='#about'>关于我们</a></li>
+                <li><a href='#service'>服务内容</a></li>
+                <li><a href='#portfolio'>客户案例</a></li>
+                <li><a href='#contact'>联系我们</a></li>
             </ul>
         </div>
     </div>
 </nav>
 <div class='jumbotron text-center'>
     <h1>店小二</h1>
-    <p>Lorem ipsum...</p>
+    <p>专业的餐饮运营管理系统</p>
 </div>
-
-<!-- about -->
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-8'>
-            <span class='glyphicon glyphicon-globe logo'></span>
-        </div>
-        <div class='col-sm-4'>
-            <h2>关于我们</h2>
-            <h4><strong>团队:</strong>Lorem ipsum...</h4>
-        </div>
-    </div>
-</div>
-<!-- endabout -->
 
 <!-- value  -->
-<div class='container-fluid'>
+<div id='value' class='container-fluid'>
     <div class='row'>
         <div class='col-sm-8'>
             <h2>我们的价值</h2>
-            <h4><strong>目标:</strong>Lorem ipsum...</h4>
-            <p><strong>愿景:</strong>Lorem ipsum...</p>
+            <h4><strong>目标:</strong>为千万餐饮人打造智能易用的运营管理系统</h4>
+            <p><strong>愿景:</strong>通过我们的服务，降低您的运营管理成本</p>
         </div>
         <div class='col-sm-4'>
             <span class='glyphicon glyphicon-signal logo'></span>
@@ -76,36 +119,50 @@
 </div>
 <!-- endvalue -->
 
+<!-- about -->
+<div id='about' class='container-fluid'>
+    <div class='row'>
+        <div class='col-sm-8'>
+            <span class='glyphicon glyphicon-globe logo'></span>
+        </div>
+        <div class='col-sm-4'>
+            <h2>我们是谁</h2>
+            <h4><strong>团队:</strong>来自前腾讯，百度等公司的技术，产品团队</h4>
+        </div>
+    </div>
+</div>
+<!-- endabout -->
+
 <!-- service -->
-<div class='container-fluid text-center'>
-    <h2>服务</h2>
+<div id='service' class='container-fluid text-center'>
+    <h2>服务内容</h2>
     <h4>我们可以为您做什么</h4>
     <br>
     <div class='row'>
         <div class='col-sm-4'>
-            <span class='glyphicon glyphicon-phone'></span>
+            <span class='glyphicon glyphicon-phone logo-small'></span>
             <h4>微信连Wi-Fi</h4>
             <p>微信扫描二维码直连Wi-Fi</p>
         </div>
         <div class='col-sm-4'>
-            <span class='glyphicon glyphicon-comment'></span>
+            <span class='glyphicon glyphicon-comment logo-small'></span>
             <h4>公众号运营</h4>
             <p>第一时间转化顾客为公众号粉丝</p>
         </div>
         <div class='col-sm-4'>
-            <span class='glyphicon glyphicon-glass'></span>
+            <span class='glyphicon glyphicon-glass logo-small'></span>
             <h4>智能点餐</h4>
             <p>在手持设备上直接点餐下单，解放服务员</p>
         </div>
     </div>
     <div class='row'>
         <div class='col-sm-4'>
-            <span class='glyphicon glyphicon-piggy-bank'></span>
+            <span class='glyphicon glyphicon-piggy-bank logo-small'></span>
             <h4>手机支付</h4>
             <p>在手持设备上直接支付，快速到账</p>
         </div>
         <div class='col-sm-4'>
-            <span class='glyphicon glyphicon-user'></span>
+            <span class='glyphicon glyphicon-user logo-small'></span>
             <h4>智能管理</h4>
             <p>员工签到，奖励，供销存一体化管理</p>
         </div>
@@ -116,9 +173,9 @@
 <!-- endservice -->
 
 <!-- portfolio -->
-<div class='container-fluid text-center'>
-    <h2></h2>
-    <h4></h4>
+<div id='portfolio' class='container-fluid text-center'>
+    <h2>客户案例</h2>
+    <h4>谁在使用我们的服务</h4>
     <div class='row text-center'>
         <div class='col-sm-4'>
             <div class='thumbnail'>
@@ -137,7 +194,7 @@
 <!-- endporfolio -->
 
 <!-- contact -->
-<div class='container-fluid text-center'>
+<div id='contact' class='container-fluid text-center'>
     <h2 class='text-center'>联系我们</h2>
     <div class='row'>
         <div class='col-sm-5'>

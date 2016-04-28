@@ -118,6 +118,10 @@ def get_code(request):
     logger.error(request.POST.get('phone', None))
     return HttpResponse('successful')
 
+@csrf_protect
+def index(request):
+    return render(request, 'index.html', None)
+
 def handler404(request, exception, template_name='404.html'):
     return HttResponse('404')
 
