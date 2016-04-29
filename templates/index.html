@@ -14,11 +14,30 @@ $(window).scroll(function() {
         }
     });
 });
+
+$(document).ready(function () {
+    $('#addon').click(function () {
+        $(this).attr('disabled', true);
+        $.post('/rms/get_code/', {csrfmiddlewaretoken: '{{ csrf_token }}', 'phone': $('#phone').val()}, function(data, status) {
+            alert(status);
+            if (status == 'success') {
+                
+            }
+            else {
+                $(this).removeAttr('disabled');
+            }
+        });
+    });
+});
 </script>
 {% endblock %}
 
 {% block extrastyle %}
 <style>
+
+.bg-gray {
+    background-color: #f6f6f6;
+}
 
 .jumbotron {
     padding: 100px 25px;
@@ -102,6 +121,17 @@ $(window).scroll(function() {
 <div class='jumbotron text-center'>
     <h1>店小二</h1>
     <p>专业的餐饮运营管理系统</p>
+    <form class='form-inline' action='' method='post' role='form'>
+        {% csrf_token %}
+        <input class='form-control' type='text' placeholder='请输入手机号码' name='phone' id='phone'>
+        <div class='input-group'>
+            <input class='form-control' type='text' placeholder='请输入短信验证码' name='' id=''>
+            <span class='input-group-addon' id='addon'>
+                点击获取验证码
+            </span>
+        </div>
+        <input class='btn btn-default' type='submit' value='登录'>
+    </form>
 </div>
 
 <!-- value  -->
@@ -120,7 +150,7 @@ $(window).scroll(function() {
 <!-- endvalue -->
 
 <!-- about -->
-<div id='about' class='container-fluid'>
+<div id='about' class='container-fluid bg-gray'>
     <div class='row'>
         <div class='col-sm-8'>
             <span class='glyphicon glyphicon-globe logo'></span>
@@ -173,7 +203,7 @@ $(window).scroll(function() {
 <!-- endservice -->
 
 <!-- portfolio -->
-<div id='portfolio' class='container-fluid text-center'>
+<div id='portfolio' class='container-fluid text-center bg-gray'>
     <h2>客户案例</h2>
     <h4>谁在使用我们的服务</h4>
     <div class='row text-center'>
@@ -218,7 +248,7 @@ $(window).scroll(function() {
                 <br>
                 <div class='row'>
                     <div class='col-sm-12 form-group'>
-                        <button class='bth btn-default pull-right' type='submit'></button>
+                        <button class='bth btn-default pull-right' type='submit'>留言</button>
                     </div>    
                 </div>
             </form>
