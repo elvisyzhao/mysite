@@ -10,6 +10,9 @@ import datetime
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+import top.api
+import json
+import random
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -37,14 +40,13 @@ def pre_order(request):
     dic = {}
     dic['min_date'] = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
     dic['max_date'] = (datetime.datetime.now()+datetime.timedelta(days=7)).strftime("%m/%d/%Y")
-    logger.error("user's phone is : " + request.user.myuser.phone)
     return render(request, 'pre_order_template.html', dic)
 
 @csrf_protect
 @login_required
 def order(request):
     appointment_time = request.POST['appointment_time'].encode('utf-8')
-    logger.error(type(appointment_time))
+     
     reg = re.compile(r'(\d{4})-(\d{1,2})-(\d{1,2}) ([\x80-\xff]+)(\d{1,2})点(\d{1,2})分')
     reMatch = reg.match(appointment_time)
     time = None
@@ -87,12 +89,11 @@ def order(request):
             except:
                 pass
         order.customer = request.user.myuser
-        logger.error('----------' + request.user.username)
-        logger.error('----------' + request.user.myuser.phone)
         order.save()
         return redirect(show_order, order.id)
     else:
-        logger.error('time string error')        
+        pass
+                 
     return HttpResponse(datetime.datetime.strftime(time, "%Y-%m-%d %H:%M"))
 
 @login_required
@@ -115,8 +116,42 @@ def order_list(request):
 
 @csrf_protect
 def get_code(request):
-    logger.error(request.POST.get('phone', None))
-    return HttpResponse('successful')
+    phone = request.POST.get('phone', None)
+
+    reg = re.compile(r'^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$')
+    if (phone):
+        match = reg.match(phone)
+        if (match):
+            req = top.api.AlibabaAliqinFcSmsNumSendRequest()
+            req.set_app_info(top.appinfo('23356837', '69a756dac2c9b056b733773089a53f10'))
+            
+            code = ''
+            for i in range(0, 4):
+                num = random.randint(0, 9)
+                code = code + str(num)
+
+            req.extend = phone.encode('utf-8')
+            req.sms_type = "normal"
+            req.sms_free_sign_name = "登录验证"
+            req.sms_param = "{\"code\":\"%s\",\"product\":\"test\"}" % code
+             
+            req.rec_num = phone.encode('utf-8')
+            req.sms_template_code = "SMS_8290223"
+            request.session['veri'] = {'code':code, 'gen_time':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+            try:
+                resp = req.getResponse()
+                r = resp.get('alibaba_aliqin_fc_sms_num_send_response', None)
+                if (r):
+                    r = r.get('result', None)
+                    if (r):
+                        r.get('success', None)
+                        if (r):
+                            return HttpResponse('success')
+
+            except Exception,e:
+                pass
+                 
+    return HttpResponse('fail')
 
 @csrf_protect
 def index(request):

@@ -24,7 +24,7 @@ class DishInline(admin.TabularInline):
     show_change_link = True
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "dish_type" and request.__obj__:
-            logger.error(db_field)
+             
             kwargs['queryset'] = request.__obj__.dishtype_set.all() 
         return super(DishInline, self).formfield_for_foreignkey(db_field,
                 request, **kwargs)

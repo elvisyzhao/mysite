@@ -11,7 +11,9 @@
             $(document).ready(function() {
                 $('#get_code').click(function() {
                     $.post('/rms/get_code/', {csrfmiddlewaretoken: '{{ csrf_token }}', 'phone': $('#{{ form.username.id_for_label }}').val()}, function(data, status) {
+                        alert(data);
                         if (status == 'success')
+                            alert('got the veri code');
                     });
                 });
             });            

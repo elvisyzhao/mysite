@@ -19,7 +19,6 @@ $(document).ready(function () {
     $('#addon').click(function () {
         $(this).attr('disabled', true);
         $.post('/rms/get_code/', {csrfmiddlewaretoken: '{{ csrf_token }}', 'phone': $('#phone').val()}, function(data, status) {
-            alert(status);
             if (status == 'success') {
                 
             }
