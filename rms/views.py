@@ -154,6 +154,10 @@ def get_code(request):
     return HttpResponse('fail')
 
 @csrf_protect
+def login(request):
+    pass
+
+@csrf_protect
 def index(request):
     return render(request, 'index.html', None)
 
