@@ -137,7 +137,7 @@ def get_code(request):
              
             req.rec_num = phone.encode('utf-8')
             req.sms_template_code = "SMS_8290223"
-            request.session['veri'] = {'code':code, 'gen_time':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+            request.session['veri_code'] = {'code':code, 'gen_time':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             try:
                 resp = req.getResponse()
                 r = resp.get('alibaba_aliqin_fc_sms_num_send_response', None)
