@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTHENTICATION_BACKENDS = ['rms.backends.MyBackend']
+AUTHENTICATION_BACKENDS = ['rms.auth.backends.MyBackend']
 
 ROOT_URLCONF = 'mysite.urls'
 

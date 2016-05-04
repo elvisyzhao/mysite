@@ -1,5 +1,5 @@
-import django.contrib.auth.backends import ModelBackend
-import django.contrib.auth.models import User
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.models import User
 
 class MyBackend(ModelBackend):
     def authenticate(self, username=None, vericode=None, request=None):

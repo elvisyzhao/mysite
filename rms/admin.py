@@ -15,6 +15,8 @@ logger.setLevel(logging.INFO)
 
 class RMSAdminSite(AdminSite):
     site_header = "餐馆管理系统"
+    login_template = 'admin_login.html'
+    login_form = ''
 
 class DishTypeInline(admin.TabularInline):
     model = DishType
