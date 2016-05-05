@@ -7,6 +7,7 @@ from .models import Order, OrderEntry
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.admin import AdminSite
+from guardian.admin import GuardedModelAdmin
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
@@ -54,7 +55,7 @@ class DishInline(admin.TabularInline):
         return super(DishInline, self).formfield_for_foreignkey(db_field,
                 request, **kwargs)
 
-class RestaurantAdmin(admin.ModelAdmin):
+class RestaurantAdmin(GuardedModelAdmin):
     inlines = [DishTypeInline, DishInline]
     def get_form(self, request, obj=None, **kwargs):
         request.__obj__ = obj

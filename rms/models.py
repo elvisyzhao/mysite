@@ -16,6 +16,12 @@ class Restaurant(models.Model):
     owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     address = models.CharField(max_length=128)
+
+    class Meta:
+        permissions = (
+            ('view_restaurant', 'Can view restaurant'),
+        )
+
     def __unicode__(self):
         return self.name
 

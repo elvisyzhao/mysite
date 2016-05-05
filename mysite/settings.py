@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rms.apps.RmsConfig',
+    'guardian'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -51,7 +52,12 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTHENTICATION_BACKENDS = ['rms.auth.backends.MyBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+]
+
+ANONYMOUS_USER_ID = -1
 
 ROOT_URLCONF = 'mysite.urls'
 
