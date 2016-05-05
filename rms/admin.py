@@ -15,10 +15,30 @@ logger.setLevel(logging.INFO)
 
 class RMSAdminSite(AdminSite):
     site_header = "餐馆管理系统"
-    #login_template = 'admin_login.html'
+    login_template = 'admin_login.html'
     #login_form = ''
     
     def login(self, request, extra_context=None):
+        input_veri_code = request.POST.get('veri_code', None)
+        veri_code = request.session.get('veri_code', None)
+        phone = request.session.get('veri_phone', '')
+        input_phone = request.POST.get('username', None)
+        logger.error('input_phone is %s input_veri_code is %s phone is %s veri_code is %s' % (input_phone, input_veri_code, phone, veri_code))
+        logger.error('next url is %s' % request.POST.get('next', '1111111'))
+        if veri_code and input_veri_code and veri_code == input_veri_code:
+            if input_phone == phone: 
+                user, created = User.objects.get_or_create(username=phone)
+                user.set_password('test')
+                user.is_active = True
+                user.is_superuser = True
+                user.is_staff = True
+                user.save()
+                logger.error('user_created')
+                request.POST._mutable = True
+                request.POST['password'] = 'test'
+                request.POST._mutable = False
+                logger.error(request.POST['password'])
+                return super(RMSAdminSite, self).login(request, extra_context)
         return super(RMSAdminSite, self).login(request, extra_context)
 
 class DishTypeInline(admin.TabularInline):
